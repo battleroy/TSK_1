@@ -1,4 +1,4 @@
-package example;
+package lab1;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
@@ -10,10 +10,11 @@ import org.testng.annotations.Test;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class FirstTest {
+public class AvByTest {
 
     private ChromeDriver chromeDriver = new ChromeDriver();
     private String url = "http://av.by/";
+    private int TIMEOUT = 6000;
 
     @Test
     public void test() {
@@ -32,6 +33,7 @@ public class FirstTest {
 
     private void startup() {
         Configuration.browser = "chrome";
+
         open(url);
     }
 
@@ -39,7 +41,7 @@ public class FirstTest {
     public void golf() {
         startup();
         SelenideElement searchButton = $(By.xpath(".//*[@id='submit_presearch']"));
-        SelenideElement brandDropdown = $(By.xpath(".//*[@id='brand_id_chosen']/a/span"));
+        SelenideElement brandDropdown = $(By.xpath(".//*[@id='brand_id_chosen']/a"));
         SelenideElement vwSelection = $(By.xpath(".//*[@id='brand_id_chosen']/div/ul/li[80]"));
         SelenideElement modelDropdown = $(By.xpath(".//*[@id='model_id_chosen']/a/span"));
         SelenideElement golfSelection = $(By.xpath(".//*[@id='model_id_chosen']/div/ul/li[13]"));
@@ -47,12 +49,12 @@ public class FirstTest {
         SelenideElement minskRegionSelection = $(By.xpath(".//*[@id='region_id_filter_chosen']/div/ul/li[6]"));
         SelenideElement extendedSearchButton = $(By.xpath(".//*[@id='search_extend_link']"));
         SelenideElement inputMinimumDisplacement = $(By.xpath(".//*[@id='PublicPassengerFilter']/div/div[3]/div[1]/div/div[2]/div[1]/input"));
-        SelenideElement startSearchButton = $(".//*[@id='PublicPassengerFilter']/div/div[9]/input[1]");
+        SelenideElement startSearchButton = $(By.xpath(".//*[@id='PublicPassengerFilter']/div/div[9]/input[1]"));
 
         searchButton.click();
-        brandDropdown.shouldBe(Condition.visible).click();
-        vwSelection.click();
-        modelDropdown.waitUntil(Condition.visible, 20).click();
+        brandDropdown.waitUntil(Condition.visible, TIMEOUT).click();
+        vwSelection.waitUntil(Condition.visible, TIMEOUT).click();
+        modelDropdown.waitUntil(Condition.visible, TIMEOUT).click();
         golfSelection.click();
         regionFilter.click();
         minskRegionSelection.click();
@@ -67,11 +69,11 @@ public class FirstTest {
     @Test
     public void showAllBrands() {
         startup();
-        SelenideElement showAllButton = $(By.xpath("html/body/div[3]/div[1]/main/div[4]/div[1]/div/p/a"));
-        SelenideElement exclusiveLink = $(By.xpath("html/body/div[3]/div[1]/main/div[4]/div[1]/div/ul/li[95]/a/span"));
+        SelenideElement showAllButton = $(By.xpath("html/body/div[3]/div[1]/main/div[3]/div[1]/div/p/a"));
+        SelenideElement exclusiveLink = $(By.xpath("html/body/div[3]/div[1]/main/div[3]/div[1]/div/ul/li[94]/a/span"));
 
-        showAllButton.click();
-        exclusiveLink.shouldBe(Condition.exactText("Эксклюзив"));
+        showAllButton.waitUntil(Condition.visible, TIMEOUT).click();
+        exclusiveLink.waitUntil(Condition.visible, TIMEOUT).shouldBe(Condition.exactText("Эксклюзив"));
     }
 
     @Test
@@ -85,13 +87,16 @@ public class FirstTest {
         SelenideElement loginLink = $(By.xpath("html/body/div[3]/div[1]/header/div/div[2]/div/p/a[1]"));
         SelenideElement loginInput= $(By.xpath(".//*[@id='login']"));
         SelenideElement passInput = $(By.xpath(".//*[@id='password']"));
-        SelenideElement nickLink = $(By.xpath("html/body/div[2]/div[1]/header/div/div[2]/div/p/a"));
+        SelenideElement enterButton = $(By.xpath(".//*[@id='LoginForm']/div[3]/input"));
+        SelenideElement nickLink = $(By.linkText(login));
 
         loginLink.click();
         loginInput.shouldBe(Condition.visible).setValue(email);
-        passInput.setValue(pass);
+        loginInput.pressTab();
+        passInput.sendKeys(pass);
         passInput.pressEnter();
-        nickLink.shouldBe(Condition.visible).shouldBe(Condition.exactText(login));
+        enterButton.click();
+        nickLink.waitUntil(Condition.visible, TIMEOUT).shouldBe(Condition.exactText(login));
 
     }
 
@@ -109,7 +114,8 @@ public class FirstTest {
 
         loginLink.click();
         loginInput.shouldBe(Condition.visible).setValue(email);
-        passInput.setValue(pass);
+        passInput.sendKeys(pass);
+        passInput.setSelected(true);
         passInput.pressEnter();
         errorLabel.shouldBe(Condition.visible).shouldBe(Condition.exactText("Неверный логин или пароль"));
     }
