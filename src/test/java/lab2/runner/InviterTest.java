@@ -1,6 +1,6 @@
 package lab2.runner;
 
-import lab2.pages.*;
+import lab2.pages.inviter.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;

@@ -115,7 +115,6 @@ public class AvByTest {
         loginLink.click();
         loginInput.shouldBe(Condition.visible).setValue(email);
         passInput.sendKeys(pass);
-        passInput.setSelected(true);
         passInput.pressEnter();
         errorLabel.shouldBe(Condition.visible).shouldBe(Condition.exactText("Неверный логин или пароль"));
     }

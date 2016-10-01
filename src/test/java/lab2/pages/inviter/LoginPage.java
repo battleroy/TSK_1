@@ -1,5 +1,6 @@
-package lab2.pages;
+package lab2.pages.inviter;
 
+import lab2.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
