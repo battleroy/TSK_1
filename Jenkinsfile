@@ -1,5 +1,5 @@
  node ('master'){
   stage 'Build and Test'
   checkout scm
-  sh '/usr/local/apache-maven-3.3.9/bin/mvn test'
+  sh '/Users/lenovo/Downloads/apache-maven-3.1.1/bin/mvn test'
  }
