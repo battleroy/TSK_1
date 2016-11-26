@@ -1,4 +1,4 @@
- node ('мастер'){
+ node ('master'){
   stage 'Build and Test'
   checkout scm
   sh 'mvn test'
